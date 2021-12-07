@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using DiskCardGame;
 using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -38,12 +39,30 @@ namespace DialogRemover
             }
         }
 
+        [HarmonyPatch(typeof(TalkingCardDialogueHandler), "DialogueSequence", new Type[] { typeof(string), typeof(List<TalkingCard>) })]
+        public class PostMultiTalkingCardPatch : TalkingCardDialogueHandler
+        {
+            public static IEnumerator Postfix(IEnumerator __result)
+            {
+                yield break;
+            }
+        }
+
         [HarmonyPatch(typeof(TextDisplayer), "ShowUntilInput", new Type[] { typeof(string), typeof(float), typeof(float), typeof(Emotion), typeof(LetterAnimation), typeof(DialogueEvent.Speaker), typeof(string[]), typeof(bool) })]
         public class TextDisplayerPatch : TextDisplayer
         {
             public static bool Prefix(ref TextDisplayer __instance)
             {
                 return false;
+            }
+        }
+
+        [HarmonyPatch(typeof(TextDisplayer), "ShowUntilInput", new Type[] { typeof(string), typeof(float), typeof(float), typeof(Emotion), typeof(LetterAnimation), typeof(DialogueEvent.Speaker), typeof(string[]), typeof(bool) })]
+        public class PostTextDisplayerPatch : TextDisplayer
+        {
+            public static IEnumerator Postfix(IEnumerator __result)
+            {
+                yield break;
             }
         }
     }
