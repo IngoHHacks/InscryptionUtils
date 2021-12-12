@@ -1,10 +1,12 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using DiskCardGame;
 using HarmonyLib;
 using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TimeControl
 {
@@ -18,6 +20,7 @@ namespace TimeControl
         internal static ManualLogSource Log;
 
         public static float time;
+        public static long lastTimeChange;
 
         private void Awake()
         {
@@ -30,13 +33,20 @@ namespace TimeControl
         private void Update()
         {
             Time.timeScale = time;
-            if (Input.GetKey("]"))
+            if (Input.GetKey("-"))
             {
                 time = (float) Math.Min(100, Time.timeScale * 1.01);
+                lastTimeChange = DateTime.Now.Ticks;
             }
-            if (Input.GetKey("["))
+            if (Input.GetKey("="))
             {
                 time = (float) Math.Max(0.01, Time.timeScale / 1.01);
+                lastTimeChange = DateTime.Now.Ticks;
+            }
+            if (Input.GetKey("0"))
+            {
+                time = 1;
+                lastTimeChange = DateTime.Now.Ticks;
             }
         }
     }
