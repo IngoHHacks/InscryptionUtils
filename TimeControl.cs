@@ -33,12 +33,12 @@ namespace TimeControl
         private void Update()
         {
             Time.timeScale = time;
-            if (Input.GetKey("-"))
+            if (Input.GetKey("="))
             {
                 time = (float) Math.Min(100, Time.timeScale * 1.01);
                 lastTimeChange = DateTime.Now.Ticks;
             }
-            if (Input.GetKey("="))
+            if (Input.GetKey("-"))
             {
                 time = (float) Math.Max(0.01, Time.timeScale / 1.01);
                 lastTimeChange = DateTime.Now.Ticks;
